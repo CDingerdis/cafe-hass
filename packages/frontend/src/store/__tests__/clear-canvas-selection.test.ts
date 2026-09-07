@@ -48,4 +48,20 @@ describe('clearCanvasSelection', () => {
     expect(after.nodes.every((node) => node.selected === false)).toBe(true);
     expect(after.edges.every((edge) => edge.selected === false)).toBe(true);
   });
+
+  it('preserves graph references when no selection is present', () => {
+    const store = useFlowStore.getState();
+
+    store.setNodes([unselectedNode]);
+    store.setEdges([]);
+
+    const nodesBeforeClear = useFlowStore.getState().nodes;
+    const edgesBeforeClear = useFlowStore.getState().edges;
+
+    store.clearCanvasSelection();
+
+    const after = useFlowStore.getState();
+    expect(after.nodes).toBe(nodesBeforeClear);
+    expect(after.edges).toBe(edgesBeforeClear);
+  });
 });

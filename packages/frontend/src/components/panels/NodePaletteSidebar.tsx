@@ -1,10 +1,10 @@
 import { PanelLeftClose, PanelLeftOpen, Wifi } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { COMPACT_NODE_PALETTE_COLLAPSED_WIDTH } from './layout';
 import { NodePalette } from '@/components/panels/NodePalette';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { version } from '../../../../../custom_components/cafe/manifest.json';
+import { COMPACT_NODE_PALETTE_COLLAPSED_WIDTH } from './layout';
 
 interface NodePaletteSidebarProps {
   expanded: boolean;
@@ -80,9 +80,7 @@ export function NodePaletteSidebar({
 }: NodePaletteSidebarProps) {
   const { t } = useTranslation(['common', 'errors', 'dialogs']);
   const compactCollapsedStyle =
-    layout === 'compact' && !expanded
-      ? { width: COMPACT_NODE_PALETTE_COLLAPSED_WIDTH }
-      : undefined;
+    layout === 'compact' && !expanded ? { width: COMPACT_NODE_PALETTE_COLLAPSED_WIDTH } : undefined;
 
   const layoutClasses =
     layout === 'compact'

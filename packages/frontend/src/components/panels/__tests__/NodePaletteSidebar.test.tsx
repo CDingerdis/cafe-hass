@@ -13,7 +13,7 @@ import { NodePaletteSidebar } from '../NodePaletteSidebar';
 describe('NodePaletteSidebar', () => {
   it('renders the expanded palette with quick-help content', () => {
     const html = renderToStaticMarkup(
-      <NodePaletteSidebar expanded onToggle={() => {}} className="w-72" />
+      <NodePaletteSidebar expanded onToggle={vi.fn()} className="w-72" />
     );
 
     expect(html).toContain('buttons.collapseMenu');
@@ -22,7 +22,7 @@ describe('NodePaletteSidebar', () => {
 
   it('renders the collapsed palette footer in icon-only mode', () => {
     const html = renderToStaticMarkup(
-      <NodePaletteSidebar expanded={false} onToggle={() => {}} className="w-20" />
+      <NodePaletteSidebar expanded={false} onToggle={vi.fn()} className="w-20" />
     );
 
     expect(html).toContain('buttons.expandMenu');
@@ -31,7 +31,7 @@ describe('NodePaletteSidebar', () => {
 
   it('uses the shared compact collapsed rail width in compact layout', () => {
     const html = renderToStaticMarkup(
-      <NodePaletteSidebar expanded={false} onToggle={() => {}} layout="compact" />
+      <NodePaletteSidebar expanded={false} onToggle={vi.fn()} layout="compact" />
     );
 
     expect(html).toContain(`width:${COMPACT_NODE_PALETTE_COLLAPSED_WIDTH}`);

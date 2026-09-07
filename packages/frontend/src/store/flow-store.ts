@@ -514,9 +514,7 @@ export const useFlowStore = create<FlowState>()(
           set((s) => ({
             nodes: [
               ...s.nodes.map((n) =>
-                n.id === waitNodeId
-                  ? { ...n, data: { ...n.data, continue_on_timeout: true } }
-                  : n
+                n.id === waitNodeId ? { ...n, data: { ...n.data, continue_on_timeout: true } } : n
               ),
               conditionNode,
             ],
@@ -539,11 +537,22 @@ export const useFlowStore = create<FlowState>()(
         selectNode: (nodeId) => set({ selectedNodeId: nodeId }),
 
         clearCanvasSelection: () =>
-          set((state) => ({
-            selectedNodeId: null,
-            nodes: state.nodes.map((node) => ({ ...node, selected: false })),
-            edges: state.edges.map((edge) => ({ ...edge, selected: false })),
-          })),
+          set((state) => {
+            const hasSelection =
+              state.selectedNodeId !== null ||
+              state.nodes.some((node) => node.selected) ||
+              state.edges.some((edge) => edge.selected);
+
+            if (!hasSelection) {
+              return state;
+            }
+
+            return {
+              selectedNodeId: null,
+              nodes: state.nodes.map((node) => ({ ...node, selected: false })),
+              edges: state.edges.map((edge) => ({ ...edge, selected: false })),
+            };
+          }),
 
         setRightPanelExpanded: (expanded) => set({ rightPanelExpanded: expanded }),
 

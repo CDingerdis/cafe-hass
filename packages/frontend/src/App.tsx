@@ -41,9 +41,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { COMPACT_NODE_PALETTE_COLLAPSED_WIDTH } from './components/panels/layout';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import { COMPACT_NODE_PALETTE_COLLAPSED_WIDTH } from './components/panels/layout';
 import { useHass } from './contexts/HassContext';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useLanguage } from './hooks/useLanguage';
@@ -71,14 +71,8 @@ function App() {
     setConfig,
   } = useHass();
 
-  const {
-    flowName,
-    reset,
-    automationId,
-    hasUnsavedChanges,
-    isSaving,
-    hasRealChanges,
-  } = useFlowStore();
+  const { flowName, reset, automationId, hasUnsavedChanges, isSaving, hasRealChanges } =
+    useFlowStore();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [importYamlOpen, setImportYamlOpen] = useState(false);
   const [automationImportOpen, setAutomationImportOpen] = useState(false);
@@ -91,7 +85,7 @@ function App() {
     const win = window.parent ?? window;
     return win.innerWidth;
   });
-  const isCompactLayout = parentWidth >= 1024 ? false : true;
+  const isCompactLayout = parentWidth < 1024;
   const forceSettingsOpen = actualIsRemote && (config.url === '' || config.token === '');
   const isDark = useDarkMode();
 
@@ -349,10 +343,10 @@ function App() {
 
             {/* Canvas */}
             <main
-              className={cn(
-                'flex min-h-0 flex-1 flex-col transition-[margin] duration-300',
-              )}
-              style={isCompactLayout ? { marginLeft: COMPACT_NODE_PALETTE_COLLAPSED_WIDTH } : undefined}
+              className={cn('flex min-h-0 flex-1 flex-col transition-[margin] duration-300')}
+              style={
+                isCompactLayout ? { marginLeft: COMPACT_NODE_PALETTE_COLLAPSED_WIDTH } : undefined
+              }
             >
               <FlowCanvas />
             </main>

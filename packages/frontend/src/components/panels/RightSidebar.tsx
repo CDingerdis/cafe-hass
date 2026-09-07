@@ -18,15 +18,13 @@ interface RightSidebarProps {
 }
 
 type RightPanelTab = 'properties' | 'yaml' | 'simulator';
-const RIGHT_PANEL_TABS: ReadonlyArray<RightPanelTab> = ['properties', 'yaml', 'simulator'];
+const RIGHT_PANEL_TABS: readonly RightPanelTab[] = ['properties', 'yaml', 'simulator'];
 
 function isRightPanelTab(value: string): value is RightPanelTab {
   return RIGHT_PANEL_TABS.some((tab) => tab === value);
 }
 
-export function RightSidebar({
-  isCompactLayout,
-}: RightSidebarProps) {
+export function RightSidebar({ isCompactLayout }: RightSidebarProps) {
   const { t } = useTranslation(['common', 'errors']);
   const {
     selectedNodeId,
@@ -46,6 +44,12 @@ export function RightSidebar({
     }
   }, [selectedNodeId, setRightPanelExpanded]);
 
+  useEffect(() => {
+    if (!isCompactLayout) {
+      setRightPanelExpanded(true);
+    }
+  }, [isCompactLayout, setRightPanelExpanded]);
+
   const handleCollapse = () => {
     setRightPanelExpanded(false);
     clearCanvasSelection();
@@ -57,10 +61,7 @@ export function RightSidebar({
     }
   };
 
-  const expandLabel =
-    selectedNodeId !== null
-      ? t('buttons.expandPropertiesPanel')
-      : t('buttons.selectNodeToOpenPropertiesPanel');
+  const expandLabel = t('buttons.expandPropertiesPanel');
 
   const collapseLabel = t('buttons.collapsePropertiesPanel');
 
@@ -146,16 +147,19 @@ export function RightSidebar({
 
   return (
     <>
-      <div
-        className={cn(
-          'pointer-events-none absolute top-0 right-0 bottom-0 z-40 flex min-h-0 flex-col overflow-hidden transition-transform duration-300',
-          isCompactLayout ? 'w-full' : 'w-[320px] max-w-[85vw] shadow-xl',
-          rightPanelExpanded ? 'pointer-events-auto translate-x-0' : 'translate-x-full'
-        )}
-      >
-        {isCompactLayout ? (
-          <div className="h-full border-border border-l bg-card">{panelContent}</div>
-        ) : (
+      {isCompactLayout ? (
+        <div
+          className={cn(
+            'pointer-events-none absolute top-0 right-0 bottom-0 z-40 flex min-h-0 w-full flex-col overflow-hidden transition-transform duration-300',
+            rightPanelExpanded ? 'pointer-events-auto translate-x-0' : 'translate-x-full'
+          )}
+        >
+          {rightPanelExpanded && (
+            <div className="h-full border-border border-l bg-card">{panelContent}</div>
+          )}
+        </div>
+      ) : (
+        rightPanelExpanded && (
           <ResizablePanel
             defaultWidth={320}
             minWidth={280}
@@ -165,26 +169,24 @@ export function RightSidebar({
           >
             {panelContent}
           </ResizablePanel>
-        )}
-      </div>
+        )
+      )}
 
       <div
         className={cn(
           'absolute right-0 z-40 transition-opacity',
           isCompactLayout ? 'top-1/2 -translate-y-1/2' : 'top-3',
-          rightPanelExpanded
-            ? 'pointer-events-none opacity-0'
-            : 'pointer-events-auto opacity-100'
+          rightPanelExpanded ? 'pointer-events-none opacity-0' : 'pointer-events-auto opacity-100'
         )}
       >
         <Button
           variant="ghost"
           size="icon"
           className={cn(
-            'border border-r-0 border-border bg-card shadow-sm',
+            'border border-border border-r-0 bg-card shadow-sm',
             isCompactLayout
-              ? 'h-14 w-8 rounded-l-lg rounded-r-none bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80'
-              : 'h-10 w-10 rounded-l-md rounded-r-none'
+              ? 'h-14 w-8 rounded-r-none rounded-l-lg bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80'
+              : 'h-10 w-10 rounded-r-none rounded-l-md'
           )}
           onClick={toggleRightPanelExpanded}
           aria-label={expandLabel}

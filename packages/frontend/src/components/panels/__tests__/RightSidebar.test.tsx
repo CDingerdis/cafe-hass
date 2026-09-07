@@ -8,23 +8,23 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('@/components/panels/PropertyPanel', () => ({
-  PropertyPanel: () => <div>PropertyPanel</div>,
+  PropertyPanel: () => <div>{'PropertyPanel'}</div>,
 }));
 
 vi.mock('@/components/panels/YamlPreview', () => ({
-  YamlPreview: () => <div>YamlPreview</div>,
+  YamlPreview: () => <div>{'YamlPreview'}</div>,
 }));
 
 vi.mock('@/components/simulator/AutomationTraceViewer', () => ({
-  AutomationTraceViewer: () => <div>AutomationTraceViewer</div>,
+  AutomationTraceViewer: () => <div>{'AutomationTraceViewer'}</div>,
 }));
 
 vi.mock('@/components/simulator/SpeedControl', () => ({
-  SpeedControl: () => <div>SpeedControl</div>,
+  SpeedControl: () => <div>{'SpeedControl'}</div>,
 }));
 
 vi.mock('@/components/simulator/TraceSimulator', () => ({
-  TraceSimulator: () => <div>TraceSimulator</div>,
+  TraceSimulator: () => <div>{'TraceSimulator'}</div>,
 }));
 
 vi.mock('@/hooks/useFlowGraphImportExport', () => ({
@@ -78,13 +78,28 @@ describe('RightSidebar', () => {
   });
 
   it('keeps the desktop trigger near the top with desktop sizing', () => {
+    useFlowStoreMock.mockReturnValue(createStoreState({ rightPanelExpanded: true }));
+
     const html = renderToStaticMarkup(<RightSidebar isCompactLayout={false} />);
 
     expect(html).toContain('top-3');
     expect(html).toContain('h-10');
     expect(html).toContain('w-10');
     expect(html).toContain('rounded-l-md');
-    expect(html).toContain('w-[320px]');
-    expect(html).toContain('max-w-[85vw]');
+    expect(html).toContain('width:320px');
+    expect(html).not.toContain('absolute top-0 right-0');
+  });
+
+  it('does not render focusable compact sidebar content while collapsed', () => {
+    const html = renderToStaticMarkup(<RightSidebar isCompactLayout={true} />);
+
+    expect(html).not.toContain('role="tablist"');
+  });
+
+  it('labels the expand button according to its action without a selection', () => {
+    const html = renderToStaticMarkup(<RightSidebar isCompactLayout={false} />);
+
+    expect(html).toContain('buttons.expandPropertiesPanel');
+    expect(html).not.toContain('buttons.selectNodeToOpenPropertiesPanel');
   });
 });
