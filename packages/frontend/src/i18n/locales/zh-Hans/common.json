@@ -20,6 +20,8 @@
     "collapseMenu": "收起菜单",
     "expandMenu": "展开菜单",
     "toggleSidebar": "切换侧边栏",
+    "expandPropertiesPanel": "展开属性面板",
+    "collapsePropertiesPanel": "收起属性面板",
     "deleteConnection": "删除连接"
   },
   "labels": {

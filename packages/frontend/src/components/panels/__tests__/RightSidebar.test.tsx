@@ -100,6 +100,5 @@ describe('RightSidebar', () => {
     const html = renderToStaticMarkup(<RightSidebar isCompactLayout={false} />);
 
     expect(html).toContain('buttons.expandPropertiesPanel');
-    expect(html).not.toContain('buttons.selectNodeToOpenPropertiesPanel');
   });
 });

@@ -22,7 +22,6 @@
     "toggleSidebar": "Seitenleiste umschalten",
     "expandPropertiesPanel": "Eigenschaftenfenster ausklappen",
     "collapsePropertiesPanel": "Eigenschaftenfenster einklappen",
-    "selectNodeToOpenPropertiesPanel": "Wählen Sie einen Knoten aus, um das Eigenschaftenfenster zu öffnen",
     "deleteConnection": "Verbindung löschen"
   },
   "labels": {
